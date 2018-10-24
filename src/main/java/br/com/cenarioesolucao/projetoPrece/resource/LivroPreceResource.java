@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ public class LivroPreceResource {
 	@Autowired
 	private LivroPreceService service;
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<LivroPrece>> buscarTodas() {
 		List<LivroPrece> body = service.buscarTodas();
@@ -35,12 +37,14 @@ public class LivroPreceResource {
 		return ResponseEntity.ok().body(body);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
 	public ResponseEntity<LivroPrece> buscarId(@PathVariable Integer id) {
 		LivroPrece body = service.buscarId(id);
 		return ResponseEntity.ok().body(body);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public ResponseEntity<Page<LivroPrece>> buscarPaginado(@RequestParam(value = "page", defaultValue = "0") Integer page, 
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage, 
@@ -52,6 +56,7 @@ public class LivroPreceResource {
 		return ResponseEntity.ok().body(body);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/dto", method = RequestMethod.GET)
 	public ResponseEntity<List<LivroPreceDTO>> buscarTodasDTO() {
 		List<LivroPrece> body = service.buscarTodas();
@@ -60,6 +65,7 @@ public class LivroPreceResource {
 		return ResponseEntity.ok().body(bodyDTO);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> guardar(@Valid @RequestBody LivroPreceDTO entityDTO) {
 		LivroPrece entity = service.converteDTO(entityDTO);
@@ -70,6 +76,7 @@ public class LivroPreceResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> atualizarId(@Valid @RequestBody LivroPreceDTO entityDTO, @PathVariable Integer id) {
 		LivroPrece entity = service.converteDTO(entityDTO);
@@ -80,6 +87,7 @@ public class LivroPreceResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> apagarId(@PathVariable Integer id) {
 		service.apagarId(id);

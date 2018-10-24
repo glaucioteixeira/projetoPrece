@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +24,7 @@ public class MunicipioResource {
 	@Autowired
 	private MunicipioService service;
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Municipio>> buscarTodas() {
 		List<Municipio> body = service.buscarTodas();
@@ -30,12 +32,14 @@ public class MunicipioResource {
 		return ResponseEntity.ok().body(body);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Municipio> buscarId(@PathVariable Integer id) {
 		Municipio body = service.buscarId(id);
 		return ResponseEntity.ok().body(body);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public ResponseEntity<Page<Municipio>> buscarPaginado(@RequestParam(value = "page", defaultValue = "0") Integer page, 
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage, 
@@ -47,6 +51,7 @@ public class MunicipioResource {
 		return ResponseEntity.ok().body(body);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/dto", method = RequestMethod.GET)
 	public ResponseEntity<List<MunicipioDTO>> buscarTodasDTO() {
 		List<Municipio> body = service.buscarTodas();
