@@ -8,7 +8,9 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import br.com.cenarioesolucao.projetoPrece.domain.Usuario;
+import br.com.cenarioesolucao.projetoPrece.service.validation.UsuarioAtualizar;
 
+@UsuarioAtualizar
 public class UsuarioDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
