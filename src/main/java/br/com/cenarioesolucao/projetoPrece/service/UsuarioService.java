@@ -15,11 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.cenarioesolucao.projetoPrece.domain.Endereco;
 import br.com.cenarioesolucao.projetoPrece.domain.Municipio;
 import br.com.cenarioesolucao.projetoPrece.domain.Usuario;
+import br.com.cenarioesolucao.projetoPrece.domain.enums.PerfilUsuario;
 import br.com.cenarioesolucao.projetoPrece.domain.enums.TipoUsuario;
 import br.com.cenarioesolucao.projetoPrece.dto.UsuarioDTO;
 import br.com.cenarioesolucao.projetoPrece.dto.UsuarioNewDTO;
 import br.com.cenarioesolucao.projetoPrece.repository.EnderecoRepository;
 import br.com.cenarioesolucao.projetoPrece.repository.UsuarioRepository;
+import br.com.cenarioesolucao.projetoPrece.security.UsuarioSpringSecurity;
+import br.com.cenarioesolucao.projetoPrece.service.exception.AuthorizationException;
 import br.com.cenarioesolucao.projetoPrece.service.exception.DataIntegrityException;
 import br.com.cenarioesolucao.projetoPrece.service.exception.ObjectNotFoundException;
 
@@ -38,6 +41,12 @@ public class UsuarioService {
 	
 	
 	public Usuario buscarId(Integer id) {
+		UsuarioSpringSecurity user = UsuarioLogadoService.authenticated();
+		if (user == null || !user.hasRole(PerfilUsuario.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado!");
+		}
+		
+		
 		Optional<Usuario> obj = repository.findById(id);
 				
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Recurso não encontrado! Id: " + id + ", Tipo: " + Usuario.class.getName()));

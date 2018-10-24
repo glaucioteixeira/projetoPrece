@@ -81,5 +81,13 @@ public class UsuarioSpringSecurity implements UserDetails {
 		
 		return true;
 	}
+	
+	/**
+	 * Metodos
+	 */
+	public boolean hasRole(PerfilUsuario perfilUsuario) {
+		return getAuthorities().contains(new SimpleGrantedAuthority(perfilUsuario.getDescricao()));
+		
+	}
 
 }
