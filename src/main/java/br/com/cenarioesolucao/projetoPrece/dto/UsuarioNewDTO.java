@@ -29,6 +29,9 @@ public class UsuarioNewDTO implements Serializable {
 	private Integer tipoUsuario;
 	
 	@NotEmpty(message = "Preenchimento obrigatório!")
+	private String senha;
+	
+	@NotEmpty(message = "Preenchimento obrigatório!")
 	private String logradouro;
 	@NotEmpty(message = "Preenchimento obrigatório!")
 	private String numero;
@@ -86,6 +89,14 @@ public class UsuarioNewDTO implements Serializable {
 
 	public void setTipoUsuario(Integer tipoUsuario) {
 		this.tipoUsuario = tipoUsuario;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 	public String getLogradouro() {

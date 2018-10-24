@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,9 @@ import br.com.cenarioesolucao.projetoPrece.service.exception.ObjectNotFoundExcep
 
 @Service
 public class UsuarioService {
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@Autowired
 	private UsuarioRepository repository;
@@ -82,13 +86,17 @@ public class UsuarioService {
 	 * @return
 	 */
 	public Usuario converteDTO(UsuarioDTO usuarioDTO) {
-		return new Usuario(usuarioDTO.getId(), usuarioDTO.getNome(), usuarioDTO.getEmail(), null, null);
+		return new Usuario(usuarioDTO.getId(), usuarioDTO.getNome(), usuarioDTO.getEmail(), null, null, null);
 	}
 	public Usuario converteDTO(UsuarioNewDTO usuarioNewDTO) {
-		Usuario usuario = new Usuario(null, usuarioNewDTO.getNome(), usuarioNewDTO.getEmail(), usuarioNewDTO.getCpfOuCnpj(), TipoUsuario.toEnum(usuarioNewDTO.getTipoUsuario()));
+		Usuario usuario = new Usuario(null, usuarioNewDTO.getNome(), usuarioNewDTO.getEmail(), 
+				usuarioNewDTO.getCpfOuCnpj(), TipoUsuario.toEnum(usuarioNewDTO.getTipoUsuario()), 
+				passwordEncoder.encode(usuarioNewDTO.getSenha()));
 		Municipio municipio = new Municipio(usuarioNewDTO.getCidadeId(), null, null);
 		
-		Endereco endereco = new Endereco(null, usuarioNewDTO.getLogradouro(), usuarioNewDTO.getNumero(), usuarioNewDTO.getComplemento(), usuarioNewDTO.getBairro(), usuarioNewDTO.getCep(), usuario, municipio);
+		Endereco endereco = new Endereco(null, usuarioNewDTO.getLogradouro(), usuarioNewDTO.getNumero(), 
+				usuarioNewDTO.getComplemento(), usuarioNewDTO.getBairro(), usuarioNewDTO.getCep(), 
+				usuario, municipio);
 
 		usuario.getEnderecos().add(endereco);
 		usuario.getTelefones().add(usuarioNewDTO.getTelefone1());

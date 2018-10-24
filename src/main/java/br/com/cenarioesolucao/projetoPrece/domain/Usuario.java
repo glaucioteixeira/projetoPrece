@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import br.com.cenarioesolucao.projetoPrece.domain.enums.TipoUsuario;
@@ -39,6 +40,9 @@ public class Usuario implements Serializable {
 	private String cpfOuCnpj;
 	private Integer tipoUsuario;
 	
+	@JsonIgnore
+	private String senha;
+	
 	@JsonManagedReference //Pode serializar o endereco
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Endereco> enderecos = new ArrayList<>();
@@ -54,13 +58,14 @@ public class Usuario implements Serializable {
 		
 	}
 
-	public Usuario(Integer id, String nome, String email, String cpfOuCnpj, TipoUsuario tipoUsuario) {
+	public Usuario(Integer id, String nome, String email, String cpfOuCnpj, TipoUsuario tipoUsuario, String senha) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
 		this.tipoUsuario = (tipoUsuario == null) ? null : tipoUsuario.getCodigo(); // Operador ternario para permitir tipoUsuario = null
+		this.senha = senha;
 	}
 
 	/**
@@ -106,6 +111,15 @@ public class Usuario implements Serializable {
 	public void setTipoUsuario(TipoUsuario tipoUsuario) {
 		this.tipoUsuario = tipoUsuario.getCodigo();
 	}
+	
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
 
 	public List<Endereco> getEnderecos() {
 		return enderecos;

@@ -3,6 +3,7 @@ package br.com.cenarioesolucao.projetoPrece.service;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.cenarioesolucao.projetoPrece.domain.Endereco;
@@ -17,6 +18,9 @@ import br.com.cenarioesolucao.projetoPrece.repository.UsuarioRepository;
 
 @Service
 public class DBService {
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@Autowired
 	private UFRepository ufRepository;
@@ -32,6 +36,7 @@ public class DBService {
 	
 	@Autowired
 	private MunicipioService municipioService;
+	
 	
 	
 	public void instantiateTestDatabase() {
@@ -105,7 +110,7 @@ public class DBService {
 		/**
 		 * Instanciando Usuario, telefone e endereco
 		 */
-		Usuario usuario01 = new Usuario(null, "Gláucio Júnior Teixeira", "glaucio.teixeira@outlook.com", "87853310668", TipoUsuario.PESSOAFISICA);
+		Usuario usuario01 = new Usuario(null, "Gláucio Júnior Teixeira", "glaucio.teixeira@outlook.com", "87853310668", TipoUsuario.PESSOAFISICA, passwordEncoder.encode("123"));
 		usuario01.getTelefones().addAll(Arrays.asList("31999500593", "31999100593"));
 		
 		
