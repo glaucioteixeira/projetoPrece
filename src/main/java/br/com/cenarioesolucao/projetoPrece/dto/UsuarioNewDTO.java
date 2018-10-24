@@ -2,6 +2,14 @@ package br.com.cenarioesolucao.projetoPrece.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import br.com.cenarioesolucao.projetoPrece.service.validation.UsuarioGuardar;
+
+@UsuarioGuardar
 public class UsuarioNewDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -9,17 +17,28 @@ public class UsuarioNewDTO implements Serializable {
 	/**
 	 * Atributos
 	 */
+	@NotEmpty(message = "Preenchimento obrigatório!")
+	@Length(min = 5, max = 80, message = "Mínimo de 5 caracteres e máximo de 80 caracteres.")
 	private String nome;
+	@NotEmpty(message = "Preenchimento obrigatório!")
+	@Email(message = "Email inválido!")
 	private String email;
+	@NotEmpty(message = "Preenchimento obrigatório!")
 	private String cpfOuCnpj;
+	
 	private Integer tipoUsuario;
 	
+	@NotEmpty(message = "Preenchimento obrigatório!")
 	private String logradouro;
+	@NotEmpty(message = "Preenchimento obrigatório!")
 	private String numero;
 	private String complemento;
+	@NotEmpty(message = "Preenchimento obrigatório!")
 	private String bairro;
+	@NotEmpty(message = "Preenchimento obrigatório!")
 	private String cep;
 	
+	@NotEmpty(message = "Preenchimento obrigatório!")
 	private String telefone1;
 	private String telefone2;
 	private String telefone3;
