@@ -10,6 +10,7 @@ import br.com.cenarioesolucao.projetoPrece.domain.Endereco;
 import br.com.cenarioesolucao.projetoPrece.domain.Municipio;
 import br.com.cenarioesolucao.projetoPrece.domain.UF;
 import br.com.cenarioesolucao.projetoPrece.domain.Usuario;
+import br.com.cenarioesolucao.projetoPrece.domain.enums.PerfilUsuario;
 import br.com.cenarioesolucao.projetoPrece.domain.enums.TipoUsuario;
 import br.com.cenarioesolucao.projetoPrece.repository.EnderecoRepository;
 import br.com.cenarioesolucao.projetoPrece.repository.MunicipioRepository;
@@ -112,17 +113,22 @@ public class DBService {
 		 */
 		Usuario usuario01 = new Usuario(null, "Gláucio Júnior Teixeira", "glaucio.teixeira@outlook.com", "87853310668", TipoUsuario.PESSOAFISICA, passwordEncoder.encode("123"));
 		usuario01.getTelefones().addAll(Arrays.asList("31999500593", "31999100593"));
+		usuario01.addPerfilUsuario(PerfilUsuario.ADMIN);
 		
+		Usuario usuario02 = new Usuario(null, "Alexsandra Silva da Costa", "alexsandra.costa1702@gmail.com", "27653334830", TipoUsuario.PESSOAFISICA, passwordEncoder.encode("123"));
+		usuario02.getTelefones().addAll(Arrays.asList("31999117270"));
 		
 		Municipio mun591 = municipioService.buscarId(2128);
 		
 		Endereco endereco01 = new Endereco(null, "Rua Geraldo Ramos", "170", "Casa", "Novo Santa Cecília", "30626692", usuario01, mun591);
 		Endereco endereco02 = new Endereco(null, "Rua Geraldo Ramos", "135", "Casa", "Novo Santa Cecília", "30626692", usuario01, mun591);
+		Endereco endereco03 = new Endereco(null, "Rua Geraldo Ramos", "170", "Casa", "Novo Santa Cecília", "30626692", usuario01, mun591);
 		
 		usuario01.getEnderecos().addAll(Arrays.asList(endereco01, endereco02));
+		usuario02.getEnderecos().addAll(Arrays.asList(endereco03));
 		
-		usuarioRepository.saveAll(Arrays.asList(usuario01));
-		enderecoRepository.saveAll(Arrays.asList(endereco01, endereco02));
+		usuarioRepository.saveAll(Arrays.asList(usuario01, usuario02));
+		enderecoRepository.saveAll(Arrays.asList(endereco01, endereco02, endereco03));
 		
 	}
 	

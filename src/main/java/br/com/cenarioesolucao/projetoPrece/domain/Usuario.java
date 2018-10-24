@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -19,6 +20,7 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import br.com.cenarioesolucao.projetoPrece.domain.enums.PerfilUsuario;
 import br.com.cenarioesolucao.projetoPrece.domain.enums.TipoUsuario;
 
 @Entity
@@ -51,11 +53,15 @@ public class Usuario implements Serializable {
 	@CollectionTable(name = "TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 	
+	@ElementCollection
+	@CollectionTable(name = "PERFILUSUARIO")
+	private Set<Integer> perfilUsuarios = new HashSet<>();
+	
 	/**
 	 * Construtores
 	 */
 	public Usuario() {
-		
+		addPerfilUsuario(PerfilUsuario.USUARIO);
 	}
 
 	public Usuario(Integer id, String nome, String email, String cpfOuCnpj, TipoUsuario tipoUsuario, String senha) {
@@ -66,6 +72,7 @@ public class Usuario implements Serializable {
 		this.cpfOuCnpj = cpfOuCnpj;
 		this.tipoUsuario = (tipoUsuario == null) ? null : tipoUsuario.getCodigo(); // Operador ternario para permitir tipoUsuario = null
 		this.senha = senha;
+		addPerfilUsuario(PerfilUsuario.USUARIO);
 	}
 
 	/**
@@ -135,6 +142,14 @@ public class Usuario implements Serializable {
 
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
+	}
+	
+	public Set<PerfilUsuario> getPerfilUsuarios() {
+		return perfilUsuarios.stream().map(x -> PerfilUsuario.toEnum(x)).collect(Collectors.toSet());
+	}
+	
+	public void addPerfilUsuario(PerfilUsuario perfilUsuario) {
+		perfilUsuarios.add(perfilUsuario.getCodigo());
 	}
 
 	/**
